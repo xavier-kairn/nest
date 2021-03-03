@@ -10,6 +10,16 @@ const pubSub = new PubSub();
 
 @Resolver(of => Recipe)
 export class RecipesResolver {
+  onApplicationShutdown(signal: string) {
+    console.log(signal);
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        console.log('onApplicationShutdown from RecipesResolver');
+        resolve();
+      }, 3000);
+    });
+  }
+
   constructor(private readonly recipesService: RecipesService) {}
 
   @Query(returns => Recipe)

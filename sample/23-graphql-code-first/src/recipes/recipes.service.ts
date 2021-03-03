@@ -1,10 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnApplicationShutdown } from '@nestjs/common';
 import { NewRecipeInput } from './dto/new-recipe.input';
 import { RecipesArgs } from './dto/recipes.args';
 import { Recipe } from './models/recipe.model';
 
 @Injectable()
-export class RecipesService {
+export class RecipesService implements OnApplicationShutdown {
+  onApplicationShutdown(signal: string) {
+    console.log(signal);
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        console.log('onApplicationShutdown from RecipesService');
+        resolve();
+      }, 3000);
+    });
+  }
   /**
    * MOCK
    * Put some real business logic here
